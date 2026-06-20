@@ -3,3 +3,18 @@
 .pytest_cache/
 __pycache__/
 *.pyc
+
+# Data and generated files
+train.csv
+*.joblib
+*.zip
+
+# Course materials / local references
+*.pdf
+成员分工与小组自评表.docx
+
+# Internal agent files
+docs/
+.pytest_cache/
+__pycache__/
+*.pyc
