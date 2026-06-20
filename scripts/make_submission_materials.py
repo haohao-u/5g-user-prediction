@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUTS = ROOT / "outputs"
 REPORT_DIR = ROOT / "report"
 REPORT_DIR.mkdir(exist_ok=True)
+GITHUB_URL = "https://github.com/haohao-u/5g-user-prediction"
 
 
 def load_metrics() -> dict:
@@ -66,6 +67,10 @@ def build_report_markdown(metrics: dict) -> str:
 ## 七、小组总结
 
 本项目完成了数据读取、特征处理、模型训练、AUC 评估、图表展示和结果分析。通过对比线性模型与集成学习模型，我们进一步理解了表格二分类任务中的数据不平衡、特征处理和模型选择问题。
+
+## 八、项目开源地址
+
+本项目已上传至 GitHub 开源仓库：[{GITHUB_URL}]({GITHUB_URL})。
 """
 
 
@@ -302,6 +307,12 @@ def create_docx(metrics: dict) -> None:
         doc,
         "本项目完成了数据读取、特征处理、两种算法建模、AUC 评估、图表展示和结果分析，满足课程作业对源码、Notebook 和报告的基本要求。",
     )
+
+    doc.add_heading("八、项目开源地址", level=1)
+    paragraph = doc.add_paragraph("本项目已上传至 GitHub 开源仓库：")
+    link_run = paragraph.add_run(GITHUB_URL)
+    link_run.font.color.rgb = RGBColor(5, 99, 193)
+    link_run.underline = True
 
     doc.save(REPORT_DIR / "5G用户预测实验报告.docx")
 
