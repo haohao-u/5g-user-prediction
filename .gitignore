@@ -1,20 +1,21 @@
-﻿train.csv
-*.joblib
-.pytest_cache/
-__pycache__/
-*.pyc
-
-# Data and generated files
+# Dataset and generated files
 train.csv
 *.joblib
 *.zip
+outputs/
+report/
 
 # Course materials / local references
 *.pdf
 成员分工与小组自评表.docx
 
-# Internal agent files
+# Local IDE and internal files
+.idea/
 docs/
+tmp/
 .pytest_cache/
 __pycache__/
 *.pyc
+
+# Local submission helper; not needed in the public source repository
+scripts/make_submission_materials.py

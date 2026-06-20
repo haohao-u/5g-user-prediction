@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# Allow direct execution with `python scripts/train_models.py` from the project root.
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -42,6 +43,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def save_target_distribution(df: pd.DataFrame, output_dir: Path) -> None:
+    """Save the class balance chart used in the coursework analysis."""
     plt.figure(figsize=(6, 4))
     ax = sns.countplot(data=df, x=TARGET, hue=TARGET, palette=["#496A81", "#D17A22"], legend=False)
     ax.set_title("Target Distribution")
@@ -53,6 +55,7 @@ def save_target_distribution(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 def save_auc_plot(scores: dict[str, float], output_dir: Path) -> None:
+    """Save a compact comparison chart for validation AUC scores."""
     score_frame = pd.DataFrame(
         {"model": list(scores.keys()), "auc": list(scores.values())}
     ).sort_values("auc", ascending=False)
@@ -70,6 +73,7 @@ def save_auc_plot(scores: dict[str, float], output_dir: Path) -> None:
 
 
 def save_roc_curves(models, x_valid, y_valid, output_dir: Path) -> None:
+    """Save ROC curves for the trained validation models."""
     fig, ax = plt.subplots(figsize=(6, 5))
     for name, model in models.items():
         RocCurveDisplay.from_estimator(model, x_valid, y_valid, name=name, ax=ax)
@@ -93,6 +97,7 @@ def main() -> None:
         y,
         test_size=args.test_size,
         random_state=args.random_state,
+        # Stratification keeps the rare positive class ratio stable in both splits.
         stratify=y,
     )
 
@@ -108,6 +113,7 @@ def main() -> None:
     best_model_name = max(scores, key=scores.get)
     best_model = models[best_model_name]
 
+    # Keep machine-readable metrics so results can be reproduced or reported later.
     summary = {
         "rows_used": int(len(df)),
         "positive_rate": float(y.mean()),

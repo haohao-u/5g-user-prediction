@@ -15,6 +15,7 @@ from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 
 TARGET = "target"
 ID_COLUMN = "id"
+# The assignment defines a fixed schema: 20 categorical and 38 numerical fields.
 CAT_FEATURES = [f"cat_{i}" for i in range(20)]
 NUM_FEATURES = [f"num_{i}" for i in range(38)]
 FEATURES = CAT_FEATURES + NUM_FEATURES
@@ -26,6 +27,7 @@ def load_training_data(csv_path: str | Path, max_rows: int | None = None) -> pd.
 
 
 def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
+    """Return model features and labels after validating the required columns."""
     missing = [column for column in [TARGET, *FEATURES] if column not in df.columns]
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
@@ -36,6 +38,7 @@ def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
 
 
 def build_preprocessor() -> ColumnTransformer:
+    """Build a shared preprocessing pipeline for both baseline models."""
     categorical = Pipeline(
         steps=[
             ("imputer", SimpleImputer(strategy="most_frequent")),
@@ -106,6 +109,7 @@ def evaluate_models(
     x_valid: pd.DataFrame,
     y_valid: pd.Series,
 ) -> dict[str, float]:
+    """Fit each model and evaluate validation AUC."""
     scores: dict[str, float] = {}
     for name, model in models.items():
         model.fit(x_train, y_train)
